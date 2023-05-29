@@ -13,6 +13,9 @@ Prepare the lists from each linear equations and assign in np.array()
 Using the np.linalg.solve(), we can find the solutions.
 ### Step 4: 
 End the program
+## Program Screenshot:
+![prg code](https://github.com/SivaramakrishnanBaskar/-SOLUTION-TO-A-SYSTEM-OF-LINEAR-EQUATIONS/assets/119476322/762840c4-4042-4734-8f74-40b8c3578946)
+
 ## Program:
 ```
 #Program to find the solution for the given linear equations.
