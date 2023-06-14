@@ -1,9 +1,12 @@
 # -SOLUTION-TO-A-SYSTEM-OF-LINEAR-EQUATIONS
+
 ## Aim:
 To write a python program to find a solution to a system of linear equations.
+
 ## Equipment’s required:
 1. 	Hardware – PCs
 2. 	Anaconda – Python 3.7 Installation / Moodle-Code Runner
+
 ## Algorithm:
 ### Step 1: 
 Import the numpy module to use the built-in functions for calculation
@@ -13,8 +16,9 @@ Prepare the lists from each linear equations and assign in np.array()
 Using the np.linalg.solve(), we can find the solutions.
 ### Step 4: 
 End the program
+
 ## Program Screenshot:
-![prg code](https://github.com/SivaramakrishnanBaskar/-SOLUTION-TO-A-SYSTEM-OF-LINEAR-EQUATIONS/assets/119476322/762840c4-4042-4734-8f74-40b8c3578946)
+![image](https://github.com/SivaramakrishnanBaskar/-SOLUTION-TO-A-SYSTEM-OF-LINEAR-EQUATIONS/assets/119476322/3ed32339-6586-450e-bb6e-6d1056ac968f)
 
 ## Program:
 ```
@@ -28,10 +32,8 @@ B = np.array([5,-3])
 X=np.linalg.inv(A).dot(B)
 print(X)
 ```
-
 ## Output:
 ![Test Cse-1](https://github.com/SivaramakrishnanBaskar/-SOLUTION-TO-A-SYSTEM-OF-LINEAR-EQUATIONS/assets/119476322/a2b08d75-51e7-488c-af12-50452f18ae3c)
 
 ## Result: 
 Thus the solutions for the linear equations are successfully solved using python program
-
