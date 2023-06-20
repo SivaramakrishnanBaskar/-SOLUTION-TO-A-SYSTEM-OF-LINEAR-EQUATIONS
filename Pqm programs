@@ -1,0 +1,432 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/SivaramakrishnanBaskar/-SOLUTION-TO-A-SYSTEM-OF-LINEAR-EQUATIONS/blob/main/Pqm%20programs\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "TxuQa72S-7IF",
+        "outputId": "be607bd8-a02d-45d3-93b3-7a14fd524106"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "8 8 7 6 4 8 9 6 5 2\n",
+            "The Mean arrival rate is 6.300 \n",
+            "The Variance of arrival from feeder is 4.210 \n",
+            "The Standard deviation of arrival from feeder is 2.052 \n"
+          ]
+        }
+      ],
+      "source": [
+        "import numpy as np\n",
+        "L=[int(i) for i in input().split()]\n",
+        "N=len(L); M=max(L)\n",
+        "x=list();f=list()\n",
+        "for i in range (M+1):\n",
+        "    c = 0\n",
+        "    for j in range(N):\n",
+        "        if L[j]==i:\n",
+        "            c=c+1\n",
+        "    f.append(c)\n",
+        "    x.app end(i)\n",
+        "sf=np.sum(f)\n",
+        "p=list()\n",
+        "for i in range(M+1):\n",
+        "    p.append(f[i]/sf)\n",
+        "mean=np.inner(x,p)\n",
+        "EX2=np.inner(np.square(x),p)\n",
+        "var=EX2-mean**2\n",
+        "SD=np.sqrt(var)\n",
+        "print(\"The Mean arrival rate is %.3f \"%mean)\n",
+        "print(\"The Variance of arrival from feeder is %.3f \"%var)\n",
+        "print(\"The Standard deviation of arrival from feeder is %.3F \"%SD)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "import math\n",
+        "import scipy.stats\n",
+        "L=[int(i) for i in input().split()]\n",
+        "N=len(L); M=max(L)\n",
+        "X=list();f=list()\n",
+        "for i in range (M+1):\n",
+        "    c = 0\n",
+        "    for j in range(N):\n",
+        "        if L[j]==i:\n",
+        "            c=c+1\n",
+        "    f.append(c)\n",
+        "    X.append(i)\n",
+        "sf=np.sum(f)\n",
+        "p=list()\n",
+        "for i in range(M+1):\n",
+        "    p.append(f[i]/sf)\n",
+        "mean=np.inner(X,p)\n",
+        "p=list();E=list();xi=list()\n",
+        "print(\"X P(X=x) Obs.Fr Exp.Fr xi\")\n",
+        "print(\"--------------------------\")\n",
+        "for x in range(M+1):\n",
+        "    p.append(math.exp(-mean)*mean**x/math.factorial(x))\n",
+        "    E.append(p[x]*sf)\n",
+        "    xi.append((f[x]-E[x])**2/E[x])\n",
+        "    print(\"%2.2f %2.3f %4.2f %3.2f %3.2f\"%(x,p[x],f[x],E[x],xi[x]))\n",
+        "print(\"--------------------------\")\n",
+        "cal_chi2_sq=np.sum(xi)\n",
+        "print(\"Calculated value of Chi square is %4.2f\"%cal_chi2_sq)\n",
+        "table_chi2=scipy.stats.chi2.ppf(1-.01,df=M)\n",
+        "print(\"Table value of chi square at 1 level is %4.2f\"%table_chi2)\n",
+        "if cal_chi2_sq<table_chi2:\n",
+        "   print(\"The given data can be fitted in poisson Distribution at 1% LOS\")\n",
+        "else:\n",
+        "    print(\"The given data cannot be fitted in Poisson Distribution at 1% LOS\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "iM7uAgamEFNX",
+        "outputId": "dc4610bb-c5a7-4520-9568-dadf265d2af5"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "5 6 7 2 3 1 8 9\n",
+            "X P(X=x) Obs.Fr Exp.Fr xi\n",
+            "--------------------------\n",
+            "0.00 0.006 0.00 0.05 0.05\n",
+            "1.00 0.030 1.00 0.24 2.35\n",
+            "2.00 0.078 1.00 0.62 0.23\n",
+            "3.00 0.133 1.00 1.07 0.00\n",
+            "4.00 0.171 0.00 1.37 1.37\n",
+            "5.00 0.175 1.00 1.40 0.12\n",
+            "6.00 0.150 1.00 1.20 0.03\n",
+            "7.00 0.110 1.00 0.88 0.02\n",
+            "8.00 0.070 1.00 0.56 0.34\n",
+            "9.00 0.040 1.00 0.32 1.45\n",
+            "--------------------------\n",
+            "Calculated value of Chi square is 5.94\n",
+            "Table value of chi square at 1 level is 21.67\n",
+            "The given data can be fitted in poisson Distribution at 1% LOS\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "import math\n",
+        "import matplotlib.pyplot as plt\n",
+        "x=[ int(i) for i in input().split()]\n",
+        "y=[ int(i) for i in input().split()]\n",
+        "N=len(x)\n",
+        "Sx=0\n",
+        "Sy=0\n",
+        "Sxy=0\n",
+        "Sx2=0\n",
+        "Sy2=0\n",
+        "for i in range(0,N):\n",
+        "    Sx=Sx+x[i]\n",
+        "    Sy=Sy+y[i]\n",
+        "    Sxy=Sxy+x[i]*y[i]\n",
+        "    Sx2=Sx2+x[i]**2\n",
+        "    Sy2=Sy2+y[i]**2\n",
+        "r=(N*Sxy-Sx*Sy)/(math.sqrt(N*Sx2-Sx**2)*math.sqrt(N*Sy2-Sy**2))\n",
+        "print(\"The Correlation coefficient is %0.3f\"%r)\n",
+        "byx=(N*Sxy-Sx*Sy)/(N*Sx2-Sx**2)\n",
+        "xmean=Sx/N\n",
+        "ymean=Sy/N\n",
+        "print(\"The Regression line Y on X is ::: y = %0.3f + %0.3f (x-%0.3f)\"%(ymean,byx,xmean))\n",
+        "plt.scatter(x,y)\n",
+        "def Reg(x):\n",
+        "  return ymean + byx*(x-xmean)\n",
+        "x=np.linspace(20,80,51)\n",
+        "y1=Reg(x)\n",
+        "plt.plot(x,y1,'r')\n",
+        "plt.xlabel('x-data')\n",
+        "plt.ylabel('y-data')\n",
+        "plt.legend(['Regression Line','Data points'])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 536
+        },
+        "id": "0IDJs2FdFqdt",
+        "outputId": "f624c7bd-228f-4901-f880-fc1f5baf794a"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "25 28 35 32 31 36 29 38 34 32\n",
+            "43 46 49 41 36 32 31 30 33 39\n",
+            "The Correlation coefficient is -0.394\n",
+            "The Regression line Y on X is ::: y = 38.000 + -0.664 (x-32.000)\n"
+          ]
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "<matplotlib.legend.Legend at 0x7ff12fdd1810>"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 5
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<Figure size 640x480 with 1 Axes>"
+            ],
+            "image/png": "iVBORw0KGgoAAAANSUhEUgAAAjIAAAGwCAYAAACzXI8XAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjcuMSwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy/bCgiHAAAACXBIWXMAAA9hAAAPYQGoP6dpAABQuklEQVR4nO3de3zO9f/H8ce1sQ2zjWW2MSzn85mWpEIO8U0p8kV0+kVTTh3oYOiwpJAKpUIkUYSInNKX5LA1bRHSRGyUfW0ObbR9fn98vru42LLNts91XXveb7fr9u067Lpe+9yu2vP7+Xzez4/NMAwDERERERfkYfUAIiIiIgWlICMiIiIuS0FGREREXJaCjIiIiLgsBRkRERFxWQoyIiIi4rIUZERERMRllbJ6gKKWlZXFsWPHKF++PDabzepxREREJA8Mw+D06dOEhobi4ZH7fhe3DzLHjh0jLCzM6jFERESkAI4cOULVqlVzfd7tg0z58uUBc0P4+flZPI2IiIjkRVpaGmFhYfa/47lx+yCTfTjJz89PQUZERMTFXO20EJ3sKyIiIi5LQUZERERclqVBZvz48dhsNodbvXr17M+np6cTGRlJYGAgvr6+9O7dm+PHj1s4sYiIiDgTy8+RadiwIevXr7ffL1Xq4kgjR45k1apVLFmyBH9/f4YNG8bdd9/N1q1brRhVRMTtZWZmcuHCBavHkBKgdOnSeHp6XvP7WB5kSpUqRXBw8BWPp6am8sEHH7Bw4UJuu+02AObMmUP9+vX5/vvvueGGG4p7VBERt2UYBsnJyZw6dcrqUaQECQgIIDg4+Jp63iwPMgcOHCA0NBQfHx8iIiKIjo6mWrVqxMTEcOHCBTp16mR/bb169ahWrRrbtm3LNchkZGSQkZFhv5+Wllbkv4OIiKvLDjFBQUGULVtWBaJSpAzD4Ny5c5w4cQKAkJCQAr+XpUGmbdu2zJ07l7p165KUlMSECRNo3749CQkJJCcn4+XlRUBAgMPPVK5cmeTk5FzfMzo6mgkTJhTx5CIi7iMzM9MeYgIDA60eR0qIMmXKAHDixAmCgoIKfJjJ0iDTrVs3+z83adKEtm3bUr16dRYvXmz/BfNr7NixjBo1yn4/u1BHRERyln1OTNmyZS2eREqa7O/chQsXChxknGr5dUBAAHXq1OGXX34hODiY8+fPX3G89vjx4zmeU5PN29vbXn6nEjwRkbzT4SQpboXxnXOqIHPmzBkOHjxISEgILVu2pHTp0mzYsMH+/L59+zh8+DAREREWTinuIDPLYNvBkyyPO8q2gyfJzDKsHklERArA0kNLTz75JD179qR69eocO3aMqKgoPD096devH/7+/jz00EOMGjWKihUr4ufnx+OPP05ERIRWLMk1WZOQxISVe0hKTbc/FuLvQ1TPBnRtVPATzkREpPhZukfm999/p1+/ftStW5c+ffoQGBjI999/T6VKlQCYOnUqPXr0oHfv3tx8880EBwezdOlSK0cWF7cmIYmhC2IdQgxAcmo6QxfEsiYhyaLJRERMhw4dwmazERcXZ+kcNWrUYNq0aZbOkBc2wzDcep96Wloa/v7+pKam6nyZEi4zy+CmSRuvCDHZbECwvw9bnrkNTw+dKyAlR3p6OomJiYSHh+Pj41Pg98nMMtiRmMKJ0+kElfehTXjFIv13afDgwcybNw8wO8mqVq3Kvffey8SJE6/p97BaZmYmf/zxB9ddd51DSWxhGz9+PF988UWugemPP/6gXLlyRXoS+D999/L699vyHhmR4rIjMSXXEANgAEmp6exITCGippagiuSHVYdsu3btypw5c7hw4QIxMTEMGjQIm83GpEmTiuwzMzMzsdlseHgUzUENT0/Pf1zUUlyyj444O6c62VekKJ04nXuIKcjrRMRk5SFbb29vgoODCQsLo1evXnTq1Il169bZn8/KyiI6Oprw8HDKlClD06ZN+eyzzxzeY8WKFdSuXRsfHx9uvfVW5s2bh81ms6+anTt3LgEBAaxYsYIGDRrg7e3N4cOHycjI4Mknn6RKlSqUK1eOtm3b8s0339jf97fffqNnz55UqFCBcuXK0bBhQ1avXg3Af//7X/r370+lSpUoU6YMtWvXZs6cOUDOh5Y2b95MmzZt8Pb2JiQkhDFjxvD333/bn7/lllt44oknePrpp6lYsSLBwcGMHz/+mrbt5YeWbDYb77//PnfddRdly5aldu3arFixwuFnEhIS6NatG76+vlSuXJmBAwfy559/XtMcV6MgIyVGUPm87WrO6+tExDycNGHlHnI6RyH7sQkr9xTLysCEhAS+++47vLy87I9FR0fz0UcfMWvWLH766SdGjhzJgAED2Lx5MwCJiYncc8899OrVi927d/Poo4/y3HPPXfHe586dY9Kk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D9SsCUeOQMeO5h4bFyrRU5AREREpyW680SzRe/RR8/60aWaJXmyslVPlmYKMiIhISefray7JvrREr21blyjRU5ARERERU24ler/8YvVkuVKQERERkYtyKtFr2hTefdcpS/QUZERERMRRTiV6Q4ZAjx5OV6KnICMiIiI5u7xEb/VqaNwYPv/c6snsFGREREQkd5eX6J08CffcA/ffD6mpVk+nICMiIiJ5kF2i99xzZriZP9/cO2NxiZ6CjIiIiOSNl5e5JPvyEr1JkywbSUFGRERE8ufSEj0PD2jXzrJRFGREREQk/7JL9PbuhZtusmwMBRkREREpuDp1LP14BRkRERFxWQoyIiIi4rIUZERERMRlKciIiIiIy1KQEREREZelICMiIiIuS0FGREREXJaCjIiIiLgsBRkRERFxWQoyIiIi4rIUZERERMRlKciIiIiIy1KQEREREZdVyuoBipphGACkpaVZPImIiIjkVfbf7ey/47lx+yBz+vRpAMLCwiyeRERERPLr9OnT+Pv75/q8zbha1HFxWVlZHDt2jPLly2Oz2QrtfdPS0ggLC+PIkSP4+fkV2vu6K22vvNO2yjttq7zTtso7bau8K8ptZRgGp0+fJjQ0FA+P3M+Ecfs9Mh4eHlStWrXI3t/Pz09f9HzQ9so7bau807bKO22rvNO2yrui2lb/tCcmm072FREREZelICMiIiIuS0GmgLy9vYmKisLb29vqUVyCtlfeaVvlnbZV3mlb5Z22Vd45w7Zy+5N9RURExH1pj4yIiIi4LAUZERERcVkKMiIiIuKyFGRERETEZSnIXEV0dDStW7emfPnyBAUF0atXL/bt2+fwmvT0dCIjIwkMDMTX15fevXtz/Phxiya2zsyZM2nSpIm9GCkiIoKvvvrK/ry2U+5effVVbDYbI0aMsD+m7WUaP348NpvN4VavXj3789pOjo4ePcqAAQMIDAykTJkyNG7cmF27dtmfNwyDcePGERISQpkyZejUqRMHDhywcGLr1KhR44rvls1mIzIyEtB361KZmZm88MILhIeHU6ZMGWrWrMmLL77ocB0ky75bhvyjLl26GHPmzDESEhKMuLg4o3v37ka1atWMM2fO2F8zZMgQIywszNiwYYOxa9cu44YbbjBuvPFGC6e2xooVK4xVq1YZ+/fvN/bt22c8++yzRunSpY2EhATDMLSd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zExGjRpFQEAAgYGBPP3001x+ebg1a9Zw00032V/To0cPDh48aH8+PDwcgObNm2Oz2bjlllsA2LlzJ507d+a6667D39+fDh06EBsbW8i/tYgUNQUZESkWlSpV4sMPP2T8+PHs2rWL06dPM3DgQIYNG0bHjh1z/Jk33niDuXPn8uGHH7JlyxZSUlJYtmyZw2vOnj3LqFGj2LVrFxs2bMDDw4O77rqLrKwsAHbs2AHA+vXrSUpKYunSpQCcPn2aQYMGsWXLFr7//ntq165N9+7dOX36dBFuBREpbLr6tYgUq8jISNavX0+rVq2Ij49n586deHt75/ja0NBQRo4cyVNPPQXA33//TXh4OC1btuSLL77I8Wf+/PNPKlWqRHx8PI0aNeLQoUOEh4fzww8/0KxZs1znysrKIiAggIULF9KjR49r/TVFpJhoj4yIFKvXX3+dv//+myVLlvDxxx/j7e3N4cOH8fX1td9eeeUVUlNTSUpKom3btvafLVWqFK1atXJ4vwMHDtCvXz+uv/56/Pz8qFGjBgCHDx/+xzmOHz/OI488Qu3atfH398fPz48zZ85c9edExLmUsnoAESlZDh48yLFjx8jKyuLQoUM0btyY0NBQh1VFFStWzPP79ezZk+rVqzN79mxCQ0PJysqiUaNGnD9//h9/btCgQZw8eZI333yT6tWr4+3tTURExFV/TkSci4KMiBSb8+fPM2DAAPr27UvdunV5+OGHiY+PJygoiFq1al3x+pCQELZv387NN98MmIeWYmJiaNGiBQAnT55k3759zJ49m/bt2wOwZcsWh/fw8vICzBOHL7V161ZmzJhB9+7dAThy5Ah//vln4f7CIlLkFGREpNg899xzpKamMn36dHx9fVm9ejUPPvggX375ZY6vHz58OK+++iq1a9emXr16TJkyhVOnTtmfr1ChAoGBgbz33nuEhIRw+PBhxowZ4/AeQUFBlClThjVr1lC1alV8fHzw9/endu3azJ8/n1atWpGWlsZTTz1FmTJlivLXF5EioHNkRKRYfPPNN0ybNo358+fj5+eHh4cH8+fP5z//+Q8zZ87M8WdGjx7NwIEDGTRoEBEREZQvX5677rrL/ryHhweLFi0iJiaGRo0aMXLkSCZPnuzwHqVKlWL69Om8++67hIaGcueddwLwwQcf8N///pcWLVowcOBAnnjiCYKCgopuA4hIkdCqJREREXFZ2iMjIiIiLktBRkRERFyWgoyIiIi4LAUZERERcVkKMiIiIuKyFGRERETEZSnIiIiIiMtSkBERERGXpSAjIiIiLktBRkRERFyWgoyIiIi4rP8HlXStWV3pTJEAAAAASUVORK5CYII=\n"
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "arr_time=float(input(\"Enter the mean inter arrival time of objects from Feeder (in secs): \"))\n",
+        "ser_time=float(input(\"Enter the mean  inter service time of Lathe Machine (in secs) :  \"))\n",
+        "Robot_time=float(input(\"Enter the Additional time taken for the Robot (in secs) :  \"))\n",
+        "lam=1/arr_time\n",
+        "mu=1/(ser_time+Robot_time)\n",
+        "print(\"--------------------------------------------------------------\")\n",
+        "print(\"Single Server with Infinite Capacity - (M/M/1):(oo/FIFO)\")\n",
+        "print(\"--------------------------------------------------------------\")\n",
+        "print(\"The mean arrival rate per second : %0.2f \"%lam)\n",
+        "print(\"The mean service rate per second : %0.2f \"%mu)\n",
+        "if (lam <  mu):\n",
+        "    Ls=lam/(mu-lam)\n",
+        "    Lq=Ls-lam/mu\n",
+        "    Ws=Ls/lam\n",
+        "    Wq=Lq/lam\n",
+        "    print(\"Average number of objects in the system : %0.2f \"%Ls)\n",
+        "    print(\"Average number of objects in the conveyor :  %0.2f \"%Lq)\n",
+        "    print(\"Average waiting time of an object in the system : %0.2f secs\"%Ws)\n",
+        "    print(\"Average waiting time of an object in the conveyor : %0.2f secs\"%Wq)\n",
+        "    print(\"Probability that the system is busy : %0.2f \"%(lam/mu) )\n",
+        "    print(\"Probability that the system is empty : %0.2f \"%(1-lam/mu) )\n",
+        "else:\n",
+        "    print(\"Warning! Objects Over flow will happen in the conveyor\")\n",
+        "print(\"---------------------------------------------------------------\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Nw6jyw9bF5kH",
+        "outputId": "482b4faf-3b5f-47c9-e0b2-c58c4ad04084"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter the mean inter arrival time of objects from Feeder (in secs): 12\n",
+            "Enter the mean  inter service time of Lathe Machine (in secs) :  1\n",
+            "Enter the Additional time taken for the Robot (in secs) :  7\n",
+            "--------------------------------------------------------------\n",
+            "Single Server with Infinite Capacity - (M/M/1):(oo/FIFO)\n",
+            "--------------------------------------------------------------\n",
+            "The mean arrival rate per second : 0.08 \n",
+            "The mean service rate per second : 0.12 \n",
+            "Average number of objects in the system : 2.00 \n",
+            "Average number of objects in the conveyor :  1.33 \n",
+            "Average waiting time of an object in the system : 24.00 secs\n",
+            "Average waiting time of an object in the conveyor : 16.00 secs\n",
+            "Probability that the system is busy : 0.67 \n",
+            "Probability that the system is empty : 0.33 \n",
+            "---------------------------------------------------------------\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import math\n",
+        "arr_time=float(input(\"Enter the mean inter arrival time of objects from Feeder (in secs): \"))\n",
+        "ser_time=float(input(\"Enter the mean  inter service time of Lathe Machine (in secs) :  \"))\n",
+        "Robot_time=float(input(\"Enter the Additional time taken for the Robot (in secs) :  \"))\n",
+        "c=int(input(\"Number of service centre :  \"))\n",
+        "lam=1/arr_time\n",
+        "mu=1/(ser_time+Robot_time)\n",
+        "print(\"--------------------------------------------------------------\")\n",
+        "print(\"Multiple Server with Infinite Capacity - (M/M/c):(oo/FIFO)\")\n",
+        "print(\"--------------------------------------------------------------\")\n",
+        "print(\"The mean arrival rate per second : %0.2f \"%lam)\n",
+        "print(\"The mean service rate per second : %0.2f \"%mu)\n",
+        "rho=lam/(c*mu)\n",
+        "sum=(lam/mu)**c*(1/(1-rho))/math.factorial(c)\n",
+        "for i in range(0,c):\n",
+        "    sum=sum+(lam/mu)**i/math.factorial(i)\n",
+        "P0=1/sum\n",
+        "if (rho<1):\n",
+        "    Lq=(P0/math.factorial(c))*(1/c)*(lam/mu)**(c+1)/(1-rho)**2\n",
+        "    Ls=Lq+lam/mu\n",
+        "    Ws=Ls/lam\n",
+        "    Wq=Lq/lam\n",
+        "    print(\"Average number of objects in the system : %0.2f \"%Ls)\n",
+        "    print(\"Average number of objects in the conveyor :  %0.2f \"%Lq)\n",
+        "    print(\"Average waiting time of an object in the system : %0.2f secs\"%Ws)\n",
+        "    print(\"Average waiting time of an object in the conveyor : %0.2f secs\"%Wq)\n",
+        "    print(\"Probability that the system is busy : %0.2f \"%(rho))\n",
+        "    print(\"Probability that the system is empty : %0.2f \"%(1-rho))\n",
+        "else:\n",
+        "    print(\"Warning! Objects Over flow will happen in the conveyor\")\n",
+        "print(\"--------------------------------------------------------------\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "twLwLavUIlb8",
+        "outputId": "8c911844-0dd1-48a3-9a14-7205d285da33"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter the mean inter arrival time of objects from Feeder (in secs): 10\n",
+            "Enter the mean  inter service time of Lathe Machine (in secs) :  1\n",
+            "Enter the Additional time taken for the Robot (in secs) :  7\n",
+            "Number of service centre :  2\n",
+            "--------------------------------------------------------------\n",
+            "Multiple Server with Infinite Capacity - (M/M/c):(oo/FIFO)\n",
+            "--------------------------------------------------------------\n",
+            "The mean arrival rate per second : 0.10 \n",
+            "The mean service rate per second : 0.12 \n",
+            "Average number of objects in the system : 0.95 \n",
+            "Average number of objects in the conveyor :  0.15 \n",
+            "Average waiting time of an object in the system : 9.52 secs\n",
+            "Average waiting time of an object in the conveyor : 1.52 secs\n",
+            "Probability that the system is busy : 0.40 \n",
+            "Probability that the system is empty : 0.60 \n",
+            "--------------------------------------------------------------\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "arr_time=float(input(\"Enter the mean inter arrival time of objects from Feeder (in secs): \"))\n",
+        "ser_time1=float(input(\"Enter the mean  inter service time of Lathe Machine 1 (in secs) :  \"))\n",
+        "ser_time2=float(input(\"Enter the mean  inter service time of Lathe Machine 2 (in secs) :  \"))\n",
+        "ser_time3=float(input(\"Enter the mean  inter service time of Lathe Machine 3 (in secs) :  \"))\n",
+        "Robot_time=float(input(\"Enter the Additional time taken for the Robot (in secs) :  \"))\n",
+        "lam=1/arr_time\n",
+        "mu1=1/(ser_time1+Robot_time)\n",
+        "mu2=1/(ser_time2+Robot_time)\n",
+        "mu3=1/(ser_time3+Robot_time)\n",
+        "print(\"-----------------------------------------------------------------------\")\n",
+        "print(\"Series Queues with infinite capacity- Open Jackson Network\")\n",
+        "print(\"-----------------------------------------------------------------------\")\n",
+        "if (lam <  mu1) and (lam <  mu2) and (lam <  mu3):\n",
+        "    Ls1=lam/(mu1-lam)\n",
+        "    Ls2=lam/(mu2-lam)\n",
+        "    Ls3=lam/(mu3-lam)\n",
+        "    Ls=Ls1+Ls2+Ls3\n",
+        "    Lq1=Ls1-lam/mu1\n",
+        "    Lq2=Ls2-lam/mu2\n",
+        "    Lq3=Ls3-lam/mu3\n",
+        "    Wq1=Lq1/lam\n",
+        "    Wq2=Lq2/lam\n",
+        "    Wq3=Lq3/lam\n",
+        "    Ws=Ls/(3*lam)\n",
+        "    print(\"Average number of objects in the system S1 : %0.2f \"%Ls1)\n",
+        "    print(\"Average number of objects in the system S2 : %0.2f \"%Ls2)\n",
+        "    print(\"Average number of objects in the system S3 : %0.2f \"%Ls3)\n",
+        "    print(\"Average number of objects in the overall system    : %0.2f \"%Ls)\n",
+        "    print(\"Average number of objects in the conveyor S1  :  %0.2f \"%Lq1)\n",
+        "    print(\"Average number of objects in the conveyor S2  :  %0.2f \"%Lq2)\n",
+        "    print(\"Average number of objects in the conveyor S3  :  %0.2f \"%Lq3)\n",
+        "    print(\"Average waiting time of an object in the conveyor S1 : %0.2f secs\"%Wq1)\n",
+        "    print(\"Average waiting time of an object in the conveyor S2 : %0.2f secs\"%Wq2)\n",
+        "    print(\"Average waiting time of an object in the conveyor S3 : %0.2f secs\"%Wq3)\n",
+        "else:\n",
+        "    print(\"Warning! Objects Over flow will happen in the conveyor\")\n",
+        "print(\"----------------------------------------------------------------------\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "UxuHu-GhJEZb",
+        "outputId": "aa47f762-3cdb-4b96-9ce2-9159dd0b4cba"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter the mean inter arrival time of objects from Feeder (in secs): 12\n",
+            "Enter the mean  inter service time of Lathe Machine 1 (in secs) :  1\n",
+            "Enter the mean  inter service time of Lathe Machine 2 (in secs) :  1.5\n",
+            "Enter the mean  inter service time of Lathe Machine 3 (in secs) :  1.3\n",
+            "Enter the Additional time taken for the Robot (in secs) :  7\n",
+            "-----------------------------------------------------------------------\n",
+            "Series Queues with infinite capacity- Open Jackson Network\n",
+            "-----------------------------------------------------------------------\n",
+            "Average number of objects in the system S1 : 2.00 \n",
+            "Average number of objects in the system S2 : 2.43 \n",
+            "Average number of objects in the system S3 : 2.24 \n",
+            "Average number of objects in the overall system    : 6.67 \n",
+            "Average number of objects in the conveyor S1  :  1.33 \n",
+            "Average number of objects in the conveyor S2  :  1.72 \n",
+            "Average number of objects in the conveyor S3  :  1.55 \n",
+            "Average waiting time of an object in the conveyor S1 : 16.00 secs\n",
+            "Average waiting time of an object in the conveyor S2 : 20.64 secs\n",
+            "Average waiting time of an object in the conveyor S3 : 18.62 secs\n",
+            "----------------------------------------------------------------------\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
